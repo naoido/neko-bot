@@ -86,7 +86,7 @@ func UpdateBot(reload bool) {
 
 func getConfig(stage string) (map[string]string, error) {
 	config := make(map[string]string)
-	err := godotenv.Load(fmt.Sprintf("env/%s.env", stage))
+	err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
 	if err != nil {
 		return nil, err
 	}
