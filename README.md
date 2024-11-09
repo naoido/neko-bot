@@ -43,7 +43,12 @@ gitGraph
     merge develop
     commit
     checkout develop
+    branch "fix/#1" order: 3
+    checkout "fix/#1"
+    commit
+    checkout develop
     merge feature/bb
+    merge "fix/#1"
     checkout release/1.0.x
     merge develop
     checkout main
