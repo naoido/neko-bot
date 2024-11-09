@@ -25,7 +25,7 @@ func KeyListener() {
 				fmt.Println("\rreloading...\r")
 				neko.UpdateBot(true)
 				fmt.Println("\rfinished!\r")
-			case 'q':
+			case 'q', 3:
 				return
 			}
 			fmt.Print("\r")
