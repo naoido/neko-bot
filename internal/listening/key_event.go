@@ -14,6 +14,8 @@ func KeyListener() {
 	errors.Catch(err, "failed to set raw mode in terminal")
 	defer term.Restore(int(os.Stdin.Fd()), oldState)
 
+	exitCode := byte(3)
+
 	for {
 		n, err := os.Stdin.Read(buffer)
 		errors.Catch(err, fmt.Sprintf("invalid input error [%s]", err))
@@ -25,7 +27,7 @@ func KeyListener() {
 				fmt.Println("\rreloading...\r")
 				neko.UpdateBot(true)
 				fmt.Println("\rfinished!\r")
-			case 'q', 3:
+			case 'q', exitCode:
 				return
 			}
 			fmt.Print("\r")
