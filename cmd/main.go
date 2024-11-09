@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"neko-bot/internal/listening"
-	"neko-bot/internal/np"
+	"neko-bot/internal/zr"
 	"neko-bot/neko"
 	"os"
 )
@@ -16,7 +16,7 @@ func main() {
 			- dev: 開発環境(ローカルで使用する場合はこちらを選択)
 	*/
 	fmt.Println("Create session of NEKO BOT.")
-	stage := np.OrDef(os.Getenv("STAGE"), "dev")
+	stage := zr.OrDef(os.Getenv("STAGE"), "dev")
 	neko.Start(stage)
 
 	fmt.Println("\u001b[00;32m・▶ ︎Bot is now running.・\u001b[00m")
