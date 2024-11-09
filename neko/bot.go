@@ -5,7 +5,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
 	"neko-bot/internal/errors"
-	"neko-bot/internal/np"
+	"neko-bot/internal/zr"
 	"os"
 )
 
@@ -95,8 +95,8 @@ func getConfig(stage string) (map[string]string, error) {
 	errors.Catch(err, "\rfailed to set STAGE")
 
 	config["token"] = "Bot " + os.Getenv("DISCORD_TOKEN")
-	config["activity_message"] = np.OrDef(os.Getenv("DISCORD_ACTIVITY_MESSAGE"), "Just chilling...")
-	config["status_type"] = np.OrDef(os.Getenv("DISCORD_STATUS_TYPE"), "online")
+	config["activity_message"] = zr.OrDef(os.Getenv("DISCORD_ACTIVITY_MESSAGE"), "Just chilling...")
+	config["status_type"] = zr.OrDef(os.Getenv("DISCORD_STATUS_TYPE"), "online")
 
 	return config, nil
 }
