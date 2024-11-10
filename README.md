@@ -33,22 +33,22 @@ gitGraph
     commit
     checkout main
     commit
-    branch hotfix/xx
+    branch hotfix/issue-xx
     commit
     checkout main
-    merge hotfix/xx
+    merge hotfix/issue-xx
     checkout develop
-    merge hotfix/xx
+    merge hotfix/issue-xx
     checkout feature/bb
     merge develop
     commit
     checkout develop
-    branch "fix/#1" order: 3
-    checkout "fix/#1"
+    branch "fix/issue-1" order: 3
+    checkout "fix/issue-1"
     commit
     checkout develop
     merge feature/bb
-    merge "fix/#1"
+    merge "fix/issue-1"
     checkout release/1.0.x
     merge develop
     checkout main
