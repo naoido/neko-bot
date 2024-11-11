@@ -29,7 +29,7 @@ jobs:
           git add .
           cd env && SUBMODULE_COMMIT=$(git rev-parse --short=7 HEAD) && cd -
           git commit -m "Update submodule [$SUBMODULE_COMMIT]"
-          git push origin feature/update-submodule
+          git push -u origin feature/update-submodule
           echo "commit_id=$SUBMODULE_COMMIT" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
