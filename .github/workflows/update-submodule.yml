@@ -23,8 +23,13 @@ jobs:
       - name: Commit
         id: commit
         run: |
-          git checkout -b feature/update-submodule develop
-          git branch --set-upstream-to=origin/feature/update-submodule feature/update-submodule
+          if git ls-remote --exit-code --heads origin feature/update-submodule; then
+            git checkout feature/update-submodule
+            git pull origin feature/update-submodule
+          else
+            git checkout -b feature/update-submodule develop
+          fi
+          
           git pull
           git submodule update --remote
           git add .
