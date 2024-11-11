@@ -1,0 +1,35 @@
+name: Update Submodule
+
+on:
+  repository_dispatch:
+    types: [update_submodule]
+
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git config
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit
+        id: commit
+        run: |
+          git checkout -b feature/update-submodule
+          git submodule update --remote
+          git add .
+          cd env && SUBMODULE_COMMIT=$(git rev-parse --short=7 HEAD) && cd -
+          git commit -m "Update submodule [$SUBMODULE_COMMIT]"
+          git push origin feature/update-submodule
+          echo "commit_id=$SUBMODULE_COMMIT" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: develop
+          head: feature/update-submodule
+          delete-branch: true
+          title: 'Update Submodule [{{ steps.get_submodule_commit.outputs.commit_id }}]'
+          reviewers: naoido
