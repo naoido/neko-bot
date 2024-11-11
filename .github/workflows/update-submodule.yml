@@ -18,6 +18,7 @@ jobs:
         with:
           ref: develop
           submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit
         id: commit
