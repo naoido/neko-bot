@@ -6,7 +6,6 @@ import (
 	"github.com/joho/godotenv"
 	"neko-bot/internal/errors"
 	"neko-bot/internal/zr"
-	"neko-bot/neko/command"
 	"os"
 )
 
@@ -23,7 +22,8 @@ func Start(stage string) {
 	discord, err = discordgo.New(config["token"])
 	errors.CatchAndPanic(err, "failed to create session of discord bot")
 
-	discord.AddMessageCreateHandler(command.UmbrellaCommand)
+	// TODO: kenta-afkにここの実装について聞く
+	//discord.AddHandlerOnce(command.UmbrellaCommand)
 
 	err = discord.Open()
 	errors.CatchAndPanic(err, "failed to open discord bot")
