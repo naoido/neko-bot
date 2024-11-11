@@ -32,14 +32,17 @@ jobs:
 
       - name: Create Pull Request
         uses: actions/github-script@v6
+        env:
+          SUBMODULE_COMMIT: ${{ steps.commit.outputs.commit_id }}
         with:
           github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           script: |
+            const commitId = process.env.SUBMODULE_COMMIT;
             const branch = process.env.BRANCH_NAME;
             const { data: pullRequest } = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title:"Update submodule [$SUBMODULE_COMMIT]",
+              title: `Update submodule [${commitId}]`,
               head: "feature/update-submodule",
               base: "develop",
               body: "This pull request was created by github actions."
