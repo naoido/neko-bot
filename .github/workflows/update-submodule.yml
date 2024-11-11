@@ -13,10 +13,16 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+          submodules: true
+
       - name: Commit
         id: commit
         run: |
-          git checkout -b feature/update-submodule
+          git checkout -b feature/update-submodule develop
           git submodule update --remote
           git add .
           cd env && SUBMODULE_COMMIT=$(git rev-parse --short=7 HEAD) && cd -
