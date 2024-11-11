@@ -36,5 +36,5 @@ jobs:
           token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           base: develop
           branch: feature/update-submodule
-          title: 'Update Submodule [{{ steps.get_submodule_commit.outputs.commit_id }}]'
+          title: 'Update Submodule [${{ steps.commit.outputs.commit_id }}]'
           reviewers: naoido
