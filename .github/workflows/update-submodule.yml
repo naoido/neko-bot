@@ -24,6 +24,7 @@ jobs:
         id: commit
         run: |
           git checkout -b feature/update-submodule develop
+          git pull
           git submodule update --remote
           git add .
           cd env && SUBMODULE_COMMIT=$(git rev-parse --short=7 HEAD) && cd -
