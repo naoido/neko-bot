@@ -36,7 +36,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: develop
-          head: feature/update-submodule
+          branch: feature/update-submodule
           delete-branch: true
           title: 'Update Submodule [{{ steps.get_submodule_commit.outputs.commit_id }}]'
           reviewers: naoido
