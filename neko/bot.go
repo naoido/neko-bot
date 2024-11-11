@@ -100,3 +100,7 @@ func getConfig(stage string) (map[string]string, error) {
 
 	return config, nil
 }
+
+func GetDiscord() *discordgo.Session {
+	return discord
+}
