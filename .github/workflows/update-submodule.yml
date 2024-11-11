@@ -33,7 +33,7 @@ jobs:
       - name: Create Pull Request
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           script: |
             const branch = process.env.BRANCH_NAME;
             const { data: pullRequest } = await github.rest.pulls.create({
