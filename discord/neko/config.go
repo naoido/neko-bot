@@ -11,7 +11,7 @@ import (
 
 type Config struct {
 	token         string
-	prefix        string
+	Prefix        string
 	stage         string
 	activeMessage string
 	status        string
@@ -56,7 +56,7 @@ func loadConfig(stage string) (*Config, error) {
 
 	return &Config{
 		token:         token,
-		prefix:        prefix,
+		Prefix:        prefix,
 		stage:         stage,
 		activeMessage: activeMessage,
 		status:        statusType,
