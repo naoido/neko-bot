@@ -18,10 +18,19 @@ func main() {
 	err := bot.Start()
 	errors.CatchAndPanic(err, "cannot start the bot")
 
+	err = bot.Update()
+	errors.CatchAndPanic(err, "cannot update the bot")
+
+	err = bot.RegisterCommands()
+	errors.CatchAndPanic(err, "cannot register commands")
+
 	fmt.Println("\u001b[00;32m・▶ ︎Bot is now running.・\u001b[00m")
 	fmt.Println("\u001B[00;31m・> Press q to exit.・\u001B[00m")
 
 	listening.KeyListener()
+	err = bot.RemoveCommands()
+	errors.CatchAndPanic(err, "cannot remove commands")
+
 	err = bot.Stop()
 	errors.CatchAndPanic(err, "cannot stop the bot")
 }
