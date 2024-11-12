@@ -3,8 +3,8 @@ package listening
 import (
 	"fmt"
 	"golang.org/x/term"
+	"neko-bot/discord/bot"
 	"neko-bot/internal/errors"
-	"neko-bot/neko"
 	"os"
 )
 
@@ -25,7 +25,8 @@ func KeyListener() {
 			switch inputChar {
 			case 'r', 'R':
 				fmt.Println("\rreloading...\r")
-				neko.UpdateBot(true)
+				err := bot.Update()
+				errors.CatchAndPanic(err, "failed to reload")
 				fmt.Println("\rfinished!\r")
 			case 'q', exitCode:
 				return

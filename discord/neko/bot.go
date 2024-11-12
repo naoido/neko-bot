@@ -3,31 +3,10 @@ package neko
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"github.com/joho/godotenv"
 	"neko-bot/internal/errors"
-	"neko-bot/internal/zr"
-	"os"
 )
 
-var (
-	discord *discordgo.Session
-	config  map[string]string
-)
-
-func Start(stage string) {
-	var err error
-	config, err = getConfig(stage)
-	errors.CatchAndPanic(err, "failed to get config")
-
-	discord, err = discordgo.New(config["token"])
-	errors.CatchAndPanic(err, "failed to create session of discord bot")
-
-	err = discord.Open()
-	errors.CatchAndPanic(err, "failed to open discord bot")
-
-	UpdateBot(false)
-
-	const nekoBot = `
+const nekoBot = `
           _____                    _____                    _____                   _______                   _____                   _______               _____
          /\    \                  /\    \                  /\    \                 /::\    \                 /\    \                 /::\    \             /\    \
         /::\____\                /::\    \                /::\____\               /::::\    \               /::\    \               /::::\    \           /::\    \
@@ -51,52 +30,72 @@ func Start(stage string) {
          \/____/                  \/____/                  \|___|                                            ~~
 
 `
+
+type Bot struct {
+	discord *discordgo.Session
+}
+
+func New(config Config) (*Bot, error) {
+	bot, err := start(config)
+	errors.CatchAndPanic(err, "cannot open discord bot session")
+
+	return &Bot{
+		discord: bot.Session(),
+	}, nil
+}
+
+func start(config Config) (*Bot, error) {
+	// Create discord session
+	session, err := discordgo.New(config.token)
+	if err != nil {
+		return nil, err
+	}
+
+	// Open discord session
+	err = session.Open()
+	if err != nil {
+		return nil, err
+	}
+
+	b := &Bot{discord: session}
+
+	b.UpdateBot(config, false)
 	fmt.Print(nekoBot)
+
+	return b, nil
 }
 
-func Stop() {
+func (b Bot) Session() *discordgo.Session {
+	if b.discord == nil {
+		panic("Discord not initialized")
+	}
+	return b.discord
+}
+
+func (b Bot) Stop() error {
 	fmt.Println("\r\u001B[00;31mShutting down...\u001B[00m")
-	errors.Catch(discord.Close(), "could not close discord bot")
+	return b.discord.Close()
 }
 
-func UpdateBot(reload bool) {
+func (b Bot) UpdateBot(config Config, reload bool) {
 	if reload {
 		var err error
-		stage := os.Getenv("STAGE")
-		config, err = getConfig(stage)
 		errors.Catch(err, "could not get config")
 
-		err = discord.Close()
+		err = b.Session().Close()
 		errors.Catch(err, "could not close discord")
 
-		err = discord.Open()
+		err = b.Session().Open()
 		errors.CatchAndPanic(err, "could not open discord")
 	}
-	err := discord.UpdateStatusComplex(discordgo.UpdateStatusData{
-		Status: config["status_type"],
+	err := b.discord.UpdateStatusComplex(discordgo.UpdateStatusData{
+		Status: config.status,
 		Activities: []*discordgo.Activity{
 			{
-				Name: config["activity_message"],
+				Name: config.activeMessage,
 				Type: discordgo.ActivityTypeGame,
 			},
 		},
 	})
 	errors.Catch(err, "\rfailed to update status of discord bot\r")
-}
-
-func getConfig(stage string) (map[string]string, error) {
-	config := make(map[string]string)
-	err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
-	if err != nil {
-		return nil, err
-	}
-
-	err = os.Setenv("STAGE", stage)
-	errors.Catch(err, "\rfailed to set STAGE")
-
-	config["token"] = "Bot " + os.Getenv("DISCORD_TOKEN")
-	config["activity_message"] = zr.OrDef(os.Getenv("DISCORD_ACTIVITY_MESSAGE"), "Just chilling...")
-	config["status_type"] = zr.OrDef(os.Getenv("DISCORD_STATUS_TYPE"), "online")
-
-	return config, nil
 }
