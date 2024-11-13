@@ -8,6 +8,7 @@ import (
 func RegisterCommands() error {
 	// ここに使用するコマンドを登録していく
 	handler.Add(&command.NewPing("ping", &config.Prefix).Detail)
+	handler.Add(&command.NewVoice("voice", &config.Prefix).Detail)
 
 	return handler.RegisterCommands(bot.Session())
 }

@@ -8,26 +8,24 @@ import (
 )
 
 type Voice struct {
-	Model
+	Detail
 }
 
 func NewVoice(name string, prefix *string) *Voice {
 	voice := &Voice{
-		Model: Model{
-			Detail: Detail{
-				name:   name,
-				prefix: prefix,
-			},
+		Detail: Detail{
+			name:   name,
+			prefix: prefix,
 		},
 	}
 
-	voice.Model.Command = voice
+	voice.Detail.Command = voice
 
 	return voice
 }
 
 func (v *Voice) GetName() string {
-	return v.Model.Detail.name
+	return v.Detail.name
 }
 
 func (v *Voice) GetCommandData() *discordgo.ApplicationCommand {
@@ -38,7 +36,7 @@ func (v *Voice) GetCommandData() *discordgo.ApplicationCommand {
 }
 
 func (v *Voice) Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	if !v.Model.Detail.isCommand(i) {
+	if !v.Detail.isCommand(i) {
 		return
 	}
 
@@ -46,7 +44,7 @@ func (v *Voice) Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func (v *Voice) Prefix(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if !v.Model.Detail.isPrefix(s, m) {
+	if !v.Detail.isPrefix(s, m) {
 		return
 	}
 
