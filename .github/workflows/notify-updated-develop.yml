@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          curl -v -X POST  -H "Content-Type: application/json" "${{ secrets.WEBHOOK_URL }}" -d '{"content": "<@&1304300205805539418> develop更新されたからpull忘れないでね！！！"}'
+          curl -X POST  -H "Content-Type: application/json" "${{ secrets.WEBHOOK_URL }}" -d '{"content": "<@&1304300205805539418> develop更新されたからpull忘れないでね！！！"}'
