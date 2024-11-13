@@ -39,7 +39,7 @@ func RegisterCommands(session *discordgo.Session) error {
 			return err
 		}
 		registeredCommands = append(registeredCommands, cmd)
-		fmt.Printf("\rRegisterd command %s\r\n", model.GetCommandData().Name)
+		fmt.Printf("\rRegistered command %s\r\n", model.GetCommandData().Name)
 	}
 	return nil
 }
