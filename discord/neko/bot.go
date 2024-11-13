@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"neko-bot/internal/errors"
+	"neko-bot/internal/loading"
 )
 
 const nekoBot = `
@@ -74,7 +75,10 @@ func (b Bot) Session() *discordgo.Session {
 
 func (b Bot) Stop() error {
 	fmt.Println("\r\u001B[00;31mShutting down...\u001B[00m")
-	return b.discord.Close()
+	loading.Start()
+	err := b.discord.Close()
+	loading.Stop()
+	return err
 }
 
 func (b Bot) UpdateBot(config Config, reload bool) {
