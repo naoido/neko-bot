@@ -6,26 +6,24 @@ import (
 )
 
 type Ping struct {
-	Model
+	Detail
 }
 
 func NewPing(name string, prefix *string) *Ping {
 	ping := &Ping{
-		Model: Model{
-			Detail: Detail{
-				name:   name,
-				prefix: prefix,
-			},
+		Detail: Detail{
+			name:   name,
+			prefix: prefix,
 		},
 	}
 
-	ping.Model.Command = ping
+	ping.Detail.Command = ping
 
 	return ping
 }
 
 func (p *Ping) GetName() string {
-	return p.Model.Detail.name
+	return p.Detail.name
 }
 
 func (p *Ping) GetCommandData() *discordgo.ApplicationCommand {
@@ -36,7 +34,7 @@ func (p *Ping) GetCommandData() *discordgo.ApplicationCommand {
 }
 
 func (p *Ping) Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	if !p.Model.Detail.isCommand(i) {
+	if !p.Detail.isCommand(i) {
 		return
 	}
 
@@ -50,7 +48,7 @@ func (p *Ping) Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func (p *Ping) Prefix(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if !p.Model.Detail.isPrefix(s, m) {
+	if !p.Detail.isPrefix(s, m) {
 		return
 	}
 

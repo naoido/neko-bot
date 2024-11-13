@@ -13,12 +13,8 @@ type Command interface {
 	Prefix(s *discordgo.Session, m *discordgo.MessageCreate)
 }
 
-type Model struct {
-	Command
-	Detail Detail
-}
-
 type Detail struct {
+	Command
 	name   string
 	prefix *string
 }
