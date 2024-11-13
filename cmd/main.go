@@ -5,6 +5,7 @@ import (
 	"neko-bot/discord/bot"
 	"neko-bot/internal/errors"
 	"neko-bot/internal/listening"
+	"neko-bot/internal/loading"
 )
 
 func main() {
@@ -15,11 +16,14 @@ func main() {
 			- dev: 開発環境(ローカルで使用する場合はこちらを選択)
 	*/
 	fmt.Println("Create session of NEKO BOT.")
+
+	loading.Start()
 	err := bot.Start()
 	errors.CatchAndPanic(err, "cannot start the bot")
 
 	err = bot.Update()
 	errors.CatchAndPanic(err, "cannot update the bot")
+	loading.Stop()
 
 	err = bot.RegisterCommands()
 	errors.CatchAndPanic(err, "cannot register commands")
