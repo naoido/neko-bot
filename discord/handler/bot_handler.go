@@ -7,11 +7,11 @@ import (
 )
 
 var (
-	commands           []*command.Model
+	commands           []*command.Detail
 	registeredCommands []*discordgo.ApplicationCommand
 )
 
-func Add(command *command.Model) {
+func Add(command *command.Detail) {
 	commands = append(commands, command)
 }
 

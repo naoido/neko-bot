@@ -7,7 +7,7 @@ import (
 
 func RegisterCommands() error {
 	// ここに使用するコマンドを登録していく
-	handler.Add(&command.NewPing("ping", &config.Prefix).Model)
+	handler.Add(&command.NewPing("ping", &config.Prefix).Detail)
 
 	return handler.RegisterCommands(bot.Session())
 }
