@@ -54,3 +54,7 @@ func RemoveCommands(session *discordgo.Session) error {
 	}
 	return nil
 }
+
+func GetRegisteredCommands() []*discordgo.ApplicationCommand {
+	return registeredCommands
+}
