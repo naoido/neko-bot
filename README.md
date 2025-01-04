@@ -33,17 +33,22 @@ gitGraph
     commit
     checkout main
     commit
-    branch hotfix/xx
+    branch hotfix/issue-xx
     commit
     checkout main
-    merge hotfix/xx
+    merge hotfix/issue-xx
     checkout develop
-    merge hotfix/xx
+    merge hotfix/issue-xx
     checkout feature/bb
     merge develop
     commit
     checkout develop
+    branch "fix/issue-1" order: 3
+    checkout "fix/issue-1"
+    commit
+    checkout develop
     merge feature/bb
+    merge "fix/issue-1"
     checkout release/1.0.x
     merge develop
     checkout main
@@ -58,4 +63,6 @@ gitGraph
 DISCORD_TOKEN=YOUR_DISCORD_TOKEN
 DISCORD_STATUS_TYPE=online
 DISCORD_ACTIVITY_MESSAGE="Just chilling..."
+DISCORD_COMMAND_PREFIX="!"
+DEVELOPERS="279583321766494208"
 ```
