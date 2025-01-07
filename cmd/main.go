@@ -28,6 +28,9 @@ func main() {
 	err = bot.RegisterCommands()
 	errors.CatchAndPanic(err, "cannot register commands")
 
+	err = bot.RegisterEvent()
+	errors.CatchAndPanic(err, "cannot register event")
+
 	fmt.Println("\u001b[00;32m・▶ ︎Bot is now running.・\u001b[00m")
 	fmt.Println("\u001B[00;31m・> Press q to exit.・\u001B[00m")
 
