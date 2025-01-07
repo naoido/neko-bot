@@ -3,35 +3,35 @@ package bot
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"neko-bot/discord/handler"
 	"neko-bot/internal/errors"
+	"os"
 )
 
 func RegisterEvent() error {
 	bot.Session().AddHandler(forumNotify)
-	return handler.RegisterCommands(bot.Session())
+	return nil
 }
 
 func forumNotify(s *discordgo.Session, c *discordgo.MessageCreate) {
-	Channel, err := s.Channel(c.ChannelID)
+	channel, err := s.Channel(c.ChannelID)
 	errors.Catch(err, "cannot get channel")
 
-	if Channel.Type == discordgo.ChannelTypeGuildPublicThread && Channel.ParentID == "ForumID" {
+	if channel.Type == discordgo.ChannelTypeGuildPublicThread && channel.ParentID == os.Getenv("FORUM_CHANNEL_ID") {
 		name := c.Author.Username
 		url := fmt.Sprintf("https://discord.com/channels/%s/%s", c.ChannelID, c.Message.ID)
-		emoji, err := s.State.Emoji(c.GuildID, "EmojiID")
+		emoji, err := s.State.Emoji(c.GuildID, os.Getenv("EMOJI_TENSAI_ID"))
 		errors.Catch(err, "cannot get emoji")
 
-		messages, err := s.ChannelMessages(c.ChannelID, 100, "", "", "")
+		messages, err := s.ChannelMessages(c.ChannelID, 10, "", "", "")
 		errors.Catch(err, "cannot get messages")
 
-		Forum, err := s.Channel(Channel.ParentID)
+		forum, err := s.Channel(channel.ParentID)
 		errors.Catch(err, "cannot get forum channel")
 
-		tagList := Forum.AvailableTags
+		tagList := forum.AvailableTags
 
 		var tags string
-		for _, tagID := range Channel.AppliedTags {
+		for _, tagID := range channel.AppliedTags {
 			for _, tag := range tagList {
 				if tag.ID == tagID {
 					tags += fmt.Sprintf("#%s ", tag.Name)
@@ -39,8 +39,26 @@ func forumNotify(s *discordgo.Session, c *discordgo.MessageCreate) {
 			}
 		}
 
+		var imageURL string
+		if len(c.Message.Attachments) > 0 {
+			imageURL = c.Message.Attachments[0].URL
+		} else {
+			imageURL = "https://random-image-pepebigotes.vercel.app/api/random-image"
+		}
 		if len(messages) <= 1 {
-			_, err = s.ChannelMessageSend("ChannelID", name+"さんが記事が投稿したよ! すごい！！！！"+emoji.MessageFormat()+"\n"+url+tags)
+			_, err = s.ChannelMessageSend(os.Getenv("SEND_CHANNEL_ID"), name+"さんが記事を投稿したよ! すごい！！！！"+emoji.MessageFormat())
+			errors.Catch(err, "cannot send message")
+			_, err = s.ChannelMessageSendEmbed(os.Getenv("SEND_CHANNEL_ID"), &discordgo.MessageEmbed{
+				Title:       url,
+				Description: tags,
+				Color:       0xf54900,
+				Author: &discordgo.MessageEmbedAuthor{
+					Name: name,
+				},
+				Image: &discordgo.MessageEmbedImage{
+					URL: imageURL,
+				},
+			})
 			errors.Catch(err, "cannot send message")
 		}
 	}
