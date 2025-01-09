@@ -103,7 +103,7 @@ func (setting *Setting) Handler(s *discordgo.Session, i *discordgo.InteractionCr
 			if err != nil {
 				interactionRespond(s, i, fmt.Sprintf("エラーが発生しました: %v", err))
 			} else {
-				interactionRespond(s, i, fmt.Sprintf("新しくウォッチリストに追加しました！ [%v]", threadId))
+				interactionRespond(s, i, fmt.Sprintf("新しくウォッチリストに追加しました！ <#%v>", threadId))
 			}
 		case "remove":
 			threadId := options[0].Options[0].StringValue()
@@ -111,7 +111,7 @@ func (setting *Setting) Handler(s *discordgo.Session, i *discordgo.InteractionCr
 			if err != nil {
 				interactionRespond(s, i, fmt.Sprintf("エラーが発生しました: %v", err))
 			} else {
-				interactionRespond(s, i, fmt.Sprintf("`%v`を削除しました", threadId))
+				interactionRespond(s, i, fmt.Sprintf("<#%v>を削除しました", threadId))
 			}
 		case "list":
 			threads := redis.Client().SMembers(redis.Context(), redis.WatchedThreadIds).Val()
