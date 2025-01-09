@@ -16,8 +16,6 @@ func threadHandler(session *discordgo.Session, c *discordgo.ThreadCreate) {
 	}
 
 	watched := redis.Client().SMembers(redis.Context(), redis.WatchedThreadIds).Val()
-	fmt.Println(watched)
-	fmt.Println(threadChannel.ParentID)
 
 	if threadChannel.Type == discordgo.ChannelTypeGuildPublicThread && slices.Contains(watched, threadChannel.ParentID) {
 		noticeChannel, err := redis.Client().Get(redis.Context(), redis.NoticeChannel).Result()
