@@ -59,9 +59,9 @@ func (say *Say) Prefix(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if strings.HasPrefix(m.Content, fmt.Sprintf("%v%s ", say.prefix, say.name)) {
-		s.ChannelMessageSendReply(m.ChannelID, strings.Replace(m.Content, fmt.Sprintf("%v%v ", say.prefix, say.name), "", 1), m.MessageReference)
+	if strings.HasPrefix(m.Content, fmt.Sprintf("%s%s ", *say.prefix, say.name)) {
+		s.ChannelMessageSend(m.ChannelID, strings.Replace(m.Content, fmt.Sprintf("%s%s ", *say.prefix, say.name), "", 1))
 	} else {
-		s.ChannelMessageSendReply(m.ChannelID, fmt.Sprintf("%v%v { 内容 }", say.prefix, say.name), m.MessageReference)
+		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s%s { 内容 }", *say.prefix, say.name))
 	}
 }
