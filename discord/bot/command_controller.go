@@ -10,6 +10,7 @@ func RegisterCommands() error {
 	handler.Add(&command.NewPing("ping", &config.Prefix).Detail)
 	handler.Add(&command.NewVoice("voice", &config.Prefix).Detail)
 	handler.Add(&command.NewSetting("setting", &config.Prefix).Detail)
+	handler.Add(&command.NewSay("say", &config.Prefix).Detail)
 
 	return handler.RegisterCommands(bot.Session())
 }
