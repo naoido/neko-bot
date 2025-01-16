@@ -34,6 +34,9 @@ func RegisterCommands(session *discordgo.Session) error {
 
 	// Add slash command data
 	for _, model := range commands {
+		if model.GetCommandData() == nil {
+			continue
+		}
 		cmd, err := session.ApplicationCommandCreate(session.State.User.ID, model.GetCommandData().GuildID, model.GetCommandData())
 		if err != nil {
 			return err

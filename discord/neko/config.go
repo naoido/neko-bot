@@ -16,6 +16,7 @@ type Config struct {
 	activeMessage string
 	status        string
 	developers    []string
+	ChatgptKey    string
 }
 
 var config *Config
@@ -53,6 +54,7 @@ func loadConfig(stage string) (*Config, error) {
 	statusType := zr.OrDef(os.Getenv("DISCORD_STATUS_TYPE"), "online")
 	activeMessage := zr.OrDef(os.Getenv("DISCORD_ACTIVITY_MESSAGE"), "Just chilling...")
 	developers := strings.Split(zr.OrDef(os.Getenv("DEVELOPERS"), ""), ",")
+	chatgptKey := zr.OrDef(os.Getenv("CHATGPT_API_KEY"), "Bot")
 
 	return &Config{
 		token:         token,
@@ -61,5 +63,6 @@ func loadConfig(stage string) (*Config, error) {
 		activeMessage: activeMessage,
 		status:        statusType,
 		developers:    developers,
+		ChatgptKey:    chatgptKey,
 	}, nil
 }

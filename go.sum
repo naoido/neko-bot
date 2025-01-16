@@ -1,3 +1,5 @@
+github.com/ayush6624/go-chatgpt v0.3.0 h1:tQUfwSvSL9KA2XmBqj3L8aVdVPRb0Hcs3XtMmZKqsc8=
+github.com/ayush6624/go-chatgpt v0.3.0/go.mod h1:bn550cv7EHT7sHJG5yR60IGqjKlZ0S0Ll+IZp3z7nOc=
 github.com/bwmarrin/discordgo v0.28.1 h1:gXsuo2GBO7NbR6uqmrrBDplPUx2T3nzu775q/Rd1aG4=
 github.com/bwmarrin/discordgo v0.28.1/go.mod h1:NJZpH+1AfhIcyQsPeuBKsUtYrRnjkyu0kIVMCHkZtRY=
 github.com/cespare/xxhash/v2 v2.2.0 h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44=
