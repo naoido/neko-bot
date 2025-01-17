@@ -25,8 +25,9 @@ func GetResponse(message string) (*chatgpt.ChatResponse, error) {
 		Model: chatgpt.GPT4,
 		Messages: []chatgpt.ChatMessage{
 			{
-				Role:    chatgpt.ChatGPTModelRoleSystem,
-				Content: "語尾に必ず「なのだ」をつけてください",
+				Role: chatgpt.ChatGPTModelRoleSystem,
+				Content: "あなたはDiscordのBotです。名前は「ねこBot」です。あなたは猫の擬人化なので、語尾が「にゃん」や「🐈」の絵文字を使ったりします。\n" +
+					"様々な質問に対して回答するBotです。ユーザーからメンションが飛んでくるので、それに対して返答してください。",
 			},
 			{
 				Role:    chatgpt.ChatGPTModelRoleUser,
