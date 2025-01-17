@@ -40,12 +40,12 @@ func idToMention(id string) string { return fmt.Sprintf("<@!%s>", id) }
 func (mention *Mention) Handler(s *discordgo.Session, i *discordgo.InteractionCreate) {}
 
 func (mention *Mention) Prefix(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if !isMention(s, m) {
+	if !isMention(s, m) || s.State.User.ID == m.Author.ID {
 		return
 	}
 
 	s.ChannelTyping(m.ChannelID)
-	res, err := chatgpt.GetResponse(m.Content)
+	res, err := chatgpt.GetResponse(m.ContentWithMentionsReplaced())
 	if err != nil {
 		_, err = s.ChannelMessageSend(m.ChannelID, "エラーが発生しました。")
 		return
