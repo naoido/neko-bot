@@ -6,6 +6,7 @@ import (
 	"neko-bot/internal/errors"
 	"neko-bot/internal/listening"
 	"neko-bot/internal/loading"
+	"neko-bot/ipa"
 )
 
 func main() {
@@ -33,6 +34,7 @@ func main() {
 	fmt.Println("\u001b[00;32m・▶ ︎Bot is now running.・\u001b[00m")
 	fmt.Println("\u001B[00;31m・> Press q to exit.・\u001B[00m")
 
+	ipa.StartWatch()
 	listening.KeyListener()
 	err = bot.RemoveCommands()
 	errors.CatchAndPanic(err, "cannot remove commands")

@@ -23,13 +23,13 @@ func NewSetting(name string, prefix *string) *Setting {
 	return setting
 }
 
-func (s *Setting) GetName() string {
-	return s.Detail.name
+func (setting *Setting) GetName() string {
+	return setting.Detail.name
 }
 
-func (s *Setting) GetCommandData() *discordgo.ApplicationCommand {
+func (setting *Setting) GetCommandData() *discordgo.ApplicationCommand {
 	return &discordgo.ApplicationCommand{
-		Name:        s.GetName(),
+		Name:        setting.GetName(),
 		Description: "guild setting command",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
@@ -80,6 +80,19 @@ func (s *Setting) GetCommandData() *discordgo.ApplicationCommand {
 								Required:    false,
 							},
 						},
+					},
+				},
+			},
+			{
+				Type:        discordgo.ApplicationCommandOptionSubCommand,
+				Name:        "ipa",
+				Description: "ipa",
+				Options: []*discordgo.ApplicationCommandOption{
+					{
+						Type:        discordgo.ApplicationCommandOptionString,
+						Name:        "channel_id",
+						Description: "channel id",
+						Required:    false,
 					},
 				},
 			},
@@ -141,6 +154,23 @@ func (setting *Setting) Handler(s *discordgo.Session, i *discordgo.InteractionCr
 				}
 				interactionRespond(s, i, fmt.Sprintf("<#%v>を新しい通知チャンネルに設定しました", newNoticeChannel))
 			}
+		}
+	case "ipa":
+		if options[0].Options == nil || len(options[0].Options) == 0 {
+			noticeChannel := redis.Client().Get(redis.Context(), redis.IpaNoticeChannel).Val()
+			interactionRespond(s, i, fmt.Sprintf("現在は <#%v> に設定されています。", noticeChannel))
+		} else {
+			newNoticeChannel := options[0].Options[0].StringValue()
+			if newNoticeChannel == "" {
+				interactionRespond(s, i, "設定するにはChannelIDを指定してください")
+				return
+			}
+			err := redis.Client().Set(redis.Context(), redis.IpaNoticeChannel, newNoticeChannel, 0).Err()
+			if err != nil {
+				interactionRespond(s, i, "エラーが発生しました")
+				return
+			}
+			interactionRespond(s, i, fmt.Sprintf("<#%v>を新しい通知チャンネルに設定しました", newNoticeChannel))
 		}
 	}
 }
