@@ -8,6 +8,8 @@ import (
 const (
 	WatchedThreadIds string = "watched_thread_ids"
 	NoticeChannel    string = "notice_channel"
+	IpaSecurityAlert string = "ipa_security_alert"
+	IpaNoticeChannel string = "ipa_notice_channel"
 )
 
 var instance *Cache
