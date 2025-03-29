@@ -7,6 +7,6 @@ resources:
 secretGenerator:
   - name: neko-bot-secret
     envs:
-      - ../env/prod.env
+      - ../../env/prod.env
     options:
       disableNameSuffixHash: true
