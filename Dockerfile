@@ -3,7 +3,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN go build -o neko-bot
+RUN go build -o neko-bot ./cmd
 
 FROM debian:bullseye-slim
 WORKDIR /app
