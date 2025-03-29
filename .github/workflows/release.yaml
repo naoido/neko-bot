@@ -41,7 +41,7 @@ jobs:
       - name: Replace image tag in manifests
         run: |
           VERSION=${{ steps.vars.outputs.version }}
-          sed -i "s|ghcr.io/naoido/neko-bot:latest|ghcr.io/naoido/neko-bot:$VERSION|g" k8s-manifests/neko-bot.yaml
+          sed -i "s|ghcr.io/naoido/neko-bot:latest|ghcr.io/naoido/neko-bot:$VERSION|g" k8s-manifests/neko-bot/neko-bot.yaml
 
       - name: Commit and push updated manifests
         run: |
