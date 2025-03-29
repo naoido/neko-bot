@@ -1,0 +1,49 @@
+name: Update Submodule
+
+on:
+  repository_dispatch:
+    types: [update_submodule]
+
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git config
+        run: |
+          git config --global user.name 'naoido'
+          git config --global user.email 'naoto.kido072@gmail.com'
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: feature/update-submodule
+          submodules: true
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+
+      - name: Commit
+        id: commit
+        run: |
+          git submodule update --remote
+          git add .
+          cd env && SUBMODULE_COMMIT=$(git rev-parse --short=7 HEAD) && cd -
+          git commit -m "Update submodule [$SUBMODULE_COMMIT]"
+          git push
+          echo "commit_id=$SUBMODULE_COMMIT" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: actions/github-script@v6
+        env:
+          SUBMODULE_COMMIT: ${{ steps.commit.outputs.commit_id }}
+        with:
+          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          script: |
+            const commitId = process.env.SUBMODULE_COMMIT;
+            const branch = process.env.BRANCH_NAME;
+            const { data: pullRequest } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Update submodule [${commitId}]`,
+              head: "feature/update-submodule",
+              base: "develop",
+              body: "This pull request was created by github actions."
+            });
