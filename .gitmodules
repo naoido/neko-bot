@@ -1,3 +1,4 @@
 [submodule "env"]
+    branch = main
 	path = env
-	url = git@github.com:naoido/neko-bot-secrets.git
+	url = git@github.com:naoido/neko-bot-secret.git
