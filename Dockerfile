@@ -5,7 +5,7 @@ RUN go mod download
 COPY . .
 RUN go build -o neko-bot ./cmd
 
-FROM debian:bookworm-slim
+FROM debian:bookworm
 WORKDIR /app
 COPY --from=builder /app/neko-bot .
 CMD ["./neko-bot"]
