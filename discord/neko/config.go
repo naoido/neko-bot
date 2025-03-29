@@ -43,12 +43,14 @@ func ReloadConfig() (*Config, error) {
 }
 
 func loadConfig(stage string) (*Config, error) {
-	err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
-	if err != nil {
-		return nil, err
+	if stage == "prod" {
+		err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	err = os.Setenv("STAGE", stage)
+	err := os.Setenv("STAGE", stage)
 	errors.Catch(err, "\rfailed to set STAGE")
 
 	token := "Bot " + os.Getenv("DISCORD_TOKEN")

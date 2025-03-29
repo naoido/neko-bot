@@ -7,10 +7,21 @@ import (
 	"neko-bot/discord/handler"
 	"neko-bot/internal/errors"
 	"os"
+	"os/signal"
 	"syscall"
 )
 
 func KeyListener() {
+	if !term.IsTerminal(int(os.Stdin.Fd())) {
+		Printlr("KeyListener skipped: no TTY available")
+
+		sigCh := make(chan os.Signal, 1)
+		signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+
+		<-sigCh
+		return
+	}
+
 	buffer := make([]byte, 1)
 	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 	errors.Catch(err, "failed to set raw mode in terminal")
