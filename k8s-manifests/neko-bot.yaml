@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neko-bot
+  namespace: neko-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neko-bot
+  template:
+    metadata:
+      labels:
+        app: neko-bot
+    spec:
+      containers:
+        - name: neko-bot
+          image: ghcr.io/naoido/neko-bot:latest
+          envFrom:
+            - secretRef:
+                name: neko-bot-secret

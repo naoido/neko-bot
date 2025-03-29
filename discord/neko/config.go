@@ -17,6 +17,8 @@ type Config struct {
 	status        string
 	developers    []string
 	ChatgptKey    string
+	RedisHost     string
+	RedisPort     string
 }
 
 var config *Config
@@ -55,6 +57,8 @@ func loadConfig(stage string) (*Config, error) {
 	activeMessage := zr.OrDef(os.Getenv("DISCORD_ACTIVITY_MESSAGE"), "Just chilling...")
 	developers := strings.Split(zr.OrDef(os.Getenv("DEVELOPERS"), ""), ",")
 	chatgptKey := zr.OrDef(os.Getenv("CHATGPT_API_KEY"), "Bot")
+	redisHost := zr.OrDef(os.Getenv("REDIS_HOST"), "localhost")
+	redisPort := zr.OrDef(os.Getenv("REDIS_PORT"), "6379")
 
 	return &Config{
 		token:         token,
@@ -64,5 +68,7 @@ func loadConfig(stage string) (*Config, error) {
 		status:        statusType,
 		developers:    developers,
 		ChatgptKey:    chatgptKey,
+		RedisHost:     redisHost,
+		RedisPort:     redisPort,
 	}, nil
 }

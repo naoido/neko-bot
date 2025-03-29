@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"github.com/redis/go-redis/v9"
+	"neko-bot/discord/neko"
 )
 
 const (
@@ -21,8 +22,9 @@ type Cache struct {
 
 func Client() *redis.Client {
 	if instance == nil {
+		config := neko.GetConfig()
 		client := redis.NewClient(&redis.Options{
-			Addr:     "localhost:6379",
+			Addr:     config.RedisHost + ":" + config.RedisPort,
 			Password: "",
 			DB:       0,
 		})
