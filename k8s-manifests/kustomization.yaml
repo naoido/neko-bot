@@ -10,8 +10,3 @@ secretGenerator:
       - ../env/prod.env
     options:
       disableNameSuffixHash: true
-  - name: neko-bot-secret-ssh
-    files:
-      - sshPrivateKey=/home/cloudinit/.ssh/neko-bot-secret-id_ed25519
-    options:
-      disableNameSuffixHash: true
