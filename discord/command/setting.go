@@ -3,6 +3,7 @@ package command
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"neko-bot/internal/errors"
 	"neko-bot/redis"
 )
 
@@ -149,6 +150,7 @@ func (setting *Setting) Handler(s *discordgo.Session, i *discordgo.InteractionCr
 				}
 				err := redis.Client().Set(redis.Context(), redis.NoticeChannel, newNoticeChannel, 0).Err()
 				if err != nil {
+					errors.Catch(err, "Redis Get Error")
 					interactionRespond(s, i, "エラーが発生しました")
 					return
 				}
@@ -167,6 +169,7 @@ func (setting *Setting) Handler(s *discordgo.Session, i *discordgo.InteractionCr
 			}
 			err := redis.Client().Set(redis.Context(), redis.IpaNoticeChannel, newNoticeChannel, 0).Err()
 			if err != nil {
+				errors.Catch(err, "Redis Set Error")
 				interactionRespond(s, i, "エラーが発生しました")
 				return
 			}

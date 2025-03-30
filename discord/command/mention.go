@@ -47,6 +47,7 @@ func (mention *Mention) Prefix(s *discordgo.Session, m *discordgo.MessageCreate)
 	s.ChannelTyping(m.ChannelID)
 	res, err := chatgpt.GetResponse(m.ContentWithMentionsReplaced())
 	if err != nil {
+		errors.Catch(err, "ChatGPT GetResponse")
 		_, err = s.ChannelMessageSend(m.ChannelID, "エラーが発生しました。")
 		return
 	}
