@@ -16,3 +16,6 @@ spec:
       containers:
         - name: neko-bot
           image: ghcr.io/naoido/neko-bot:latest
+          envFrom:
+            - secretRef:
+                name: neko-bot-secret
