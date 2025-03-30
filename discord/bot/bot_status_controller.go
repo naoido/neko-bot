@@ -12,11 +12,7 @@ func Start() error {
 
 	config = neko.GetConfig()
 	bot, err = neko.New(*config)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func Update() error {

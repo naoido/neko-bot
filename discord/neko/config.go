@@ -43,7 +43,7 @@ func ReloadConfig() (*Config, error) {
 }
 
 func loadConfig(stage string) (*Config, error) {
-	if stage == "prod" {
+	if stage != "prod" {
 		err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
 		if err != nil {
 			return nil, err
