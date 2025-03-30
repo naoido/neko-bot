@@ -53,4 +53,4 @@ jobs:
           git config user.email "github-actions@github.com"
           git add k8s-manifests/neko-bot/neko-bot.yaml
           git commit -m "chore: update image tag to ${{ steps.vars.outputs.version }}" || echo "No changes"
-          git push origin main
+          git push
