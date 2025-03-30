@@ -1,18 +1,14 @@
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: redis-data
 spec:
-  capacity:
-    storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
+  resources:
+    requests:
+      storage: 1Gi
   storageClassName: nfs-csi
-  nfs:
-    server: 192.168.1.50
-    path: /mnt/pool/k8s-nfs/redis-data
 ---
 apiVersion: apps/v1
 kind: Deployment
