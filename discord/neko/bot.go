@@ -2,9 +2,11 @@ package neko
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"neko-bot/internal/errors"
 	"neko-bot/internal/loading"
+	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 const nekoBot = `
@@ -33,7 +35,8 @@ const nekoBot = `
 `
 
 type Bot struct {
-	discord *discordgo.Session
+	discord   *discordgo.Session
+	StartedAt int64
 }
 
 func New(config Config) (*Bot, error) {
@@ -41,7 +44,8 @@ func New(config Config) (*Bot, error) {
 	errors.CatchAndPanic(err, "cannot open discord bot session")
 
 	return &Bot{
-		discord: bot.Session(),
+		discord:   bot.Session(),
+		StartedAt: time.Now().Unix(),
 	}, nil
 }
 
