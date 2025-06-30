@@ -2,8 +2,9 @@ package redis
 
 import (
 	"context"
-	"github.com/redis/go-redis/v9"
 	"neko-bot/discord/neko"
+
+	"github.com/redis/go-redis/v9"
 )
 
 const (
@@ -11,6 +12,7 @@ const (
 	NoticeChannel    string = "notice_channel"
 	IpaSecurityAlert string = "ipa_security_alert"
 	IpaNoticeChannel string = "ipa_notice_channel"
+	LastAction       string = "last_action"
 )
 
 var instance *Cache

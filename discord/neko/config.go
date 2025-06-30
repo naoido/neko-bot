@@ -1,6 +1,8 @@
 package neko
 
 import (
+	"fmt"
+	"github.com/joho/godotenv"
 	"neko-bot/internal/errors"
 	"neko-bot/internal/zr"
 	"os"
@@ -41,12 +43,12 @@ func ReloadConfig() (*Config, error) {
 }
 
 func loadConfig(stage string) (*Config, error) {
-	//if stage != "prod" {
-	//	err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//}
+	if stage != "prod" {
+		err := godotenv.Overload(fmt.Sprintf("env/%s.env", stage))
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	token := "Bot " + os.Getenv("DISCORD_TOKEN")
 	prefix := zr.OrDef(os.Getenv("DISCORD_COMMAND_PREFIX"), "!")
