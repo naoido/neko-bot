@@ -9,6 +9,7 @@ import (
 
 const (
 	WatchedThreadIds string = "watched_thread_ids"
+	WatchedZennUsers string = "watched_zenn_users"
 	NoticeChannel    string = "notice_channel"
 	IpaSecurityAlert string = "ipa_security_alert"
 	IpaNoticeChannel string = "ipa_notice_channel"
