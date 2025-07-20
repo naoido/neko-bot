@@ -13,6 +13,7 @@ func RegisterCommands() error {
 	handler.Add(&command.NewMention().Detail)
 	handler.Add(&command.NewSay("say", &config.Prefix).Detail)
 	handler.Add(&command.NewLastAction("action", &config.Prefix).Detail)
+	handler.Add(&command.NewZenn("zenn", &config.Prefix, bot.Session()).Detail)
 
 	return handler.RegisterCommands(bot.Session())
 }
