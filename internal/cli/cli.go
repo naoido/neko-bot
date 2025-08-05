@@ -31,15 +31,18 @@ func (c *cli) Start(ctx context.Context) error {
 	// キーイベントを受け取るため
 	keyEvent := NewKeyEvent()
 	input, t, err := keyEvent.Listening(internal)
-	defer term.Restore(int(os.Stdin.Fd()), t)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if t != nil {
+			_ = term.Restore(int(os.Stdin.Fd()), t)
+		}
+	}()
 
 	// OSシグナルを受信するため
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-
-	if err != nil {
-		return err
-	}
 
 LOOP:
 	for {
