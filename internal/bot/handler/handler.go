@@ -34,6 +34,7 @@ func NewHandler(s *discordgo.Session) Handler {
 		onMessage,
 		onThreadCreate,
 		onReaction,
+		onReactionRemove,
 	}
 
 	return &handler{}

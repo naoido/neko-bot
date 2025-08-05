@@ -30,7 +30,7 @@ func main() {
 	close(loadingDone)
 
 	fmt.Println("\u001b[00;32m・▶ ︎Bot is now running.・\u001b[00m")
-	fmt.Println("\u001B[00;31m・> Press q to exit.・\u001B[00m")
+	fmt.Println("\u001B[00;31m・>  Press q to exit.・\u001B[00m")
 
 	ipa.StartWatch(botClient.Session())
 
