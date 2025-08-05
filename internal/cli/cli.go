@@ -28,35 +28,49 @@ func (c *cli) Start(ctx context.Context) error {
 	internal, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	// キーイベントを受け取るため
-	keyEvent := NewKeyEvent()
-	input, t, err := keyEvent.Listening(internal)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if t != nil {
-			_ = term.Restore(int(os.Stdin.Fd()), t)
-		}
-	}()
-
 	// OSシグナルを受信するため
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
+	// キーイベントを受け取るため（TTYが利用可能な場合のみ）
+	keyEvent := NewKeyEvent()
+	input, t, err := keyEvent.Listening(internal)
+	
+	var hasKeyInput bool
+	if err != nil {
+		fmt.Printf("Key input disabled: %v\n", err)
+		hasKeyInput = false
+	} else {
+		hasKeyInput = true
+		defer func() {
+			if t != nil {
+				_ = term.Restore(int(os.Stdin.Fd()), t)
+			}
+		}()
+	}
+
 LOOP:
 	for {
-		select {
-		case cmd := <-input:
-			err := c.handler(cmd, cancel)
-
-			if err != nil {
-				fmt.Println("CLI操作でエラーが発生しました :", err)
-				cancel()
+		if hasKeyInput {
+			select {
+			case cmd := <-input:
+				err := c.handler(cmd, cancel)
+				if err != nil {
+					fmt.Println("CLI操作でエラーが発生しました :", err)
+					cancel()
+				}
+			case <-quit:
+				break LOOP
+			case <-internal.Done():
+				break LOOP
 			}
-		case <-quit:
-		case <-internal.Done():
-			break LOOP
+		} else {
+			select {
+			case <-quit:
+				break LOOP
+			case <-internal.Done():
+				break LOOP
+			}
 		}
 	}
 
